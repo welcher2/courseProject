@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Recipe } from '../recipe.model';
 import { RecipeService } from '../recipe.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-recipe-list',
@@ -17,6 +18,11 @@ export class RecipeListComponent implements OnInit {
 
   ngOnInit() {
       this.recipes = this.recipeService.getRecipes();
+      
+      this.recipeService.recipeChanged
+        .subscribe((recipe: Recipe[]) => {
+            this.recipes = recipe;
+        })
   }
     onRecipeEdit() {
         this.router.navigate(['new'], {relativeTo: this.route});
