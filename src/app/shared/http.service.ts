@@ -3,14 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { RecipeService } from '../recipes/recipe.service';
 import { Recipe } from '../recipes/recipe.model';
 import { map, tap } from 'rxjs/operators';
-import { AuthService } from '../auth/auth.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class HttpService {
 
-    constructor(private http: HttpClient, private recipeService: RecipeService, private authService: AuthService) { }
+    constructor(private http: HttpClient, private recipeService: RecipeService) { }
 
     storeRecipes() {
         const recipes = this.recipeService.getRecipes();
@@ -23,6 +22,7 @@ export class HttpService {
         return this.http.get<Recipe[]>(
             'https://angular-course-project-e2e3c.firebaseio.com/recipes.json').pipe(
                 tap(recipes => {
+                    console.log(recipes)
                     this.recipeService.setRecipes(recipes);
                 }),
                 map(recipes => {

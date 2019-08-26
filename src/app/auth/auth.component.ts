@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from './auth.service';
 import { AuthResponseData } from './auth.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Component({
@@ -10,17 +10,18 @@ import { Router } from '@angular/router';
     templateUrl: './auth.component.html',
     styleUrls: ['./auth.component.css']
 })
-export class AuthComponent implements OnInit {
+export class AuthComponent implements OnInit, OnDestroy {
 
     isLoading = false;
     loggingIn = true;
     error: string = null;
+    closeSub: Subscription;
     loginForm = new FormGroup({
         email: new FormControl(null, [Validators.required, Validators.email]),
         password: new FormControl(null, [Validators.required, Validators.minLength(6)])
     })
 
-    constructor(private authService: AuthService, private route: Router) { }
+    constructor(private authService: AuthService, private route: Router, private componentFR: ComponentFactoryResolver) { }
 
     ngOnInit() {
     }
@@ -57,6 +58,12 @@ export class AuthComponent implements OnInit {
 
     onHandleError() {
         this.error = null;
+    }
+
+    ngOnDestroy(): void {
+        if(this.closeSub) {
+            this.closeSub.unsubscribe();
+        }
     }
 
 }
