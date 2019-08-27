@@ -8,11 +8,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core.module';
+import { GithubLinkComponent } from './components/github-link.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
+    GithubLinkComponent
   ],
   imports: [
     BrowserModule,
